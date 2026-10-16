@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.krakdev.peliculas.entidades.Pelicula;
@@ -98,6 +99,40 @@ public class PeliculaController {
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar pelicula por id");
+        }
+    }
+    
+   
+    @GetMapping("/genero")
+    public ResponseEntity<?> buscarPorGenero(@RequestParam String genero) {
+        try {
+            List<Pelicula> peliculas = servicio.buscarPorGenero(genero);
+
+            if (peliculas.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            return ResponseEntity.ok(peliculas);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al consultar pelicula por genero");
+        }
+    }
+
+
+    @GetMapping("/disponible")
+    public ResponseEntity<?> buscarPorDisponible(@RequestParam boolean disponible) {
+        try {
+            List<Pelicula> peliculas = servicio.buscarPorDisponible(disponible);
+
+            if (peliculas.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            return ResponseEntity.ok(peliculas);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al consultar pelicula por disponible");
         }
     }
 }
